@@ -162,10 +162,15 @@ Provide a detailed day-by-day breakdown with morning and afternoon activities, h
       const aiResponse = openaiData.choices[0].message.content;
       console.log("AI Response received:", aiResponse);
 
-      // Try to parse the AI response as JSON, fall back to text if it fails
+      // Try to parse the AI response as JSON, removing any markdown code fences
       let parsedResponse;
       try {
-        parsedResponse = JSON.parse(aiResponse);
+        // Some models wrap JSON in ```json ... ``` or ```...``` blocks. Extract the inner JSON if present.
+        const jsonMatch =
+          aiResponse.match(/```json\s*([\s\S]*?)\s*```/) ||
+          aiResponse.match(/```\s*([\s\S]*?)\s*```/);
+        const jsonString = jsonMatch ? jsonMatch[1] : aiResponse;
+        parsedResponse = JSON.parse(jsonString);
       } catch (e) {
         parsedResponse = null;
       }
