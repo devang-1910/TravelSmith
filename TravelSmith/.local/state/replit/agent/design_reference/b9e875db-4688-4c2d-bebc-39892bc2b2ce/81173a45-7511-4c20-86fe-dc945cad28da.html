@@ -1,0 +1,603 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TripSmith - Travel Planner & Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        'travel-blue': {
+                            50: '#f0f9ff',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-white to-blue-50 min-h-screen font-sans">
+
+    <!-- @COMPONENT: Header [sticky navigation with branding] -->
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-slate-200/50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 bg-gradient-to-br from-travel-blue-600 to-travel-blue-700 rounded-2xl flex items-center justify-center shadow-lg">
+                        <i class="fas fa-compass text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-slate-900">TripSmith</h1>
+                        <p class="text-xs text-slate-500 -mt-1">Travel Planner & Explorer</p>
+                    </div>
+                </div>
+                <div class="hidden sm:flex items-center space-x-6">
+                    <div class="text-sm text-slate-600">
+                        <span class="inline-flex items-center space-x-1">
+                            <i class="fas fa-shield-alt text-emerald-500"></i>
+                            <span>AI-Powered</span>
+                        </span>
+                    </div>
+                    <div class="text-sm text-slate-600">
+                        <span class="inline-flex items-center space-x-1">
+                            <i class="fas fa-check-circle text-emerald-500"></i>
+                            <span>Verified Sources</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: Header -->
+
+    <!-- @COMPONENT: HeroSection [introduction and value proposition] -->
+    <section class="py-12 bg-gradient-to-r from-travel-blue-50 to-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold text-slate-900 mb-4">Plan Your Perfect Journey</h2>
+            <p class="text-xl text-slate-600 max-w-3xl mx-auto mb-8">
+                Get expert travel advice and create detailed itineraries with AI-powered insights from trusted sources.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <div class="bg-white/70 backdrop-blur rounded-2xl p-6 shadow-sm border border-white/50">
+                    <i class="fas fa-search text-3xl text-travel-blue-600 mb-4"></i>
+                    <h3 class="font-semibold text-slate-900 mb-2">Smart Explorer</h3>
+                    <p class="text-sm text-slate-600">Ask any travel question and get comprehensive, cited answers</p>
+                </div>
+                <div class="bg-white/70 backdrop-blur rounded-2xl p-6 shadow-sm border border-white/50">
+                    <i class="fas fa-route text-3xl text-travel-blue-600 mb-4"></i>
+                    <h3 class="font-semibold text-slate-900 mb-2">Trip Planner</h3>
+                    <p class="text-sm text-slate-600">Generate detailed day-by-day itineraries tailored to your preferences</p>
+                </div>
+                <div class="bg-white/70 backdrop-blur rounded-2xl p-6 shadow-sm border border-white/50">
+                    <i class="fas fa-link text-3xl text-travel-blue-600 mb-4"></i>
+                    <h3 class="font-semibold text-slate-900 mb-2">Verified Sources</h3>
+                    <p class="text-sm text-slate-600">All recommendations backed by official and trusted travel sources</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: HeroSection -->
+
+    <!-- @COMPONENT: MainApplication [tabbed interface with explorer and planner] -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- @COMPONENT: TabNavigation [switches between explorer and planner modes] -->
+        <div class="flex justify-center mb-8">
+            <div class="bg-white rounded-full p-1 shadow-lg border border-slate-200">
+                <button id="explorerTab" class="tab-button active px-6 py-3 rounded-full text-sm font-medium transition-all">
+                    <i class="fas fa-search mr-2"></i>Explorer
+                </button>
+                <button id="plannerTab" class="tab-button px-6 py-3 rounded-full text-sm font-medium transition-all">
+                    <i class="fas fa-calendar-alt mr-2"></i>Planner
+                </button>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: TabNavigation -->
+
+        <!-- @COMPONENT: ExplorerPanel [travel question interface] -->
+        <div id="explorerPanel" class="tab-panel">
+            <div class="bg-white rounded-3xl shadow-xl border border-slate-200/50 overflow-hidden">
+                <div class="p-8">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold text-slate-900 mb-2">Travel Explorer</h3>
+                        <p class="text-slate-600">Ask any travel question and get expert advice with verified sources</p>
+                    </div>
+
+                    <div class="max-w-4xl mx-auto space-y-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-3">What would you like to know?</label>
+                            <textarea 
+                                id="travelQuery"
+                                placeholder="e.g., 5-day Scotland Highlands loop with drives under 2 hours, include Jacobite train"
+                                class="w-full h-32 px-4 py-3 border border-slate-300 rounded-2xl focus:ring-2 focus:ring-travel-blue-500 focus:border-transparent resize-none text-slate-900 placeholder-slate-400"
+                                data-mock="true"
+                            ></textarea>
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-4">
+                            <label class="inline-flex items-center space-x-2 text-sm">
+                                <input type="checkbox" class="rounded border-slate-300 text-travel-blue-600 focus:ring-travel-blue-500" data-mock="true">
+                                <span class="text-slate-700">Prefer recent (≤12 months)</span>
+                            </label>
+                            <label class="inline-flex items-center space-x-2 text-sm">
+                                <input type="checkbox" class="rounded border-slate-300 text-travel-blue-600 focus:ring-travel-blue-500" data-mock="true">
+                                <span class="text-slate-700">Official sources only</span>
+                            </label>
+                        </div>
+
+                        <div class="flex items-center justify-center space-x-4">
+                            <button class="bg-travel-blue-600 hover:bg-travel-blue-700 text-white px-8 py-3 rounded-full font-medium transition-colors shadow-lg hover:shadow-xl">
+                                <i class="fas fa-search mr-2"></i>Search & Answer
+                            </button>
+                            <button class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-6 py-3 rounded-full font-medium transition-colors">
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- @COMPONENT: ExplorerResults [displays AI answer and sources] -->
+                <div class="border-t border-slate-100 bg-slate-50/50">
+                    <div class="p-8">
+                        <div class="max-w-6xl mx-auto grid lg:grid-cols-3 gap-8">
+                            <!-- Answer Section -->
+                            <div class="lg:col-span-2">
+                                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/50">
+                                    <h4 class="text-lg font-semibold text-slate-900 mb-4 flex items-center">
+                                        <i class="fas fa-lightbulb text-travel-blue-600 mr-2"></i>
+                                        Expert Answer
+                                    </h4>
+                                    <div class="prose prose-slate max-w-none text-sm leading-relaxed" data-mock="true">
+                                        <p><strong>Scotland Highlands 5-Day Loop (Under 2-Hour Drives)</strong></p>
+                                        <ul class="space-y-2 mt-4">
+                                            <li>• <strong>Base in Inverness</strong> for 2 nights to explore Loch Ness and nearby castles within 1.5h drive [1][3]</li>
+                                            <li>• <strong>Fort William area</strong> (1.8h drive) for Jacobite Steam Train and Ben Nevis views [2][4]</li>
+                                            <li>• <strong>Jacobite train runs Apr-Oct</strong>, advance booking essential especially Jul-Aug [2]</li>
+                                            <li>• <strong>Eilean Donan Castle</strong> perfect stopping point between locations (1.2h from Fort William) [1][3]</li>
+                                            <li>• <strong>Best route</strong>: Inverness → Loch Ness → Fort William → Eilean Donan → back to Inverness [1]</li>
+                                            <li>• <strong>Weather backup</strong>: Indoor attractions in Inverness and Fort William museums [3]</li>
+                                        </ul>
+                                        <p class="mt-4 text-sm font-medium">Perfect for scenic drives without long travel times, maximizing Highland experience.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sources Section -->
+                            <div class="lg:col-span-1">
+                                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/50 h-fit">
+                                    <h4 class="text-lg font-semibold text-slate-900 mb-4 flex items-center">
+                                        <i class="fas fa-link text-emerald-600 mr-2"></i>
+                                        Verified Sources
+                                    </h4>
+                                    <div class="space-y-4">
+                                        <!-- @MAP: sources.map(source => ( -->
+                                        <div class="border-l-4 border-travel-blue-200 pl-4" data-mock="true">
+                                            <p class="font-medium text-sm text-slate-900">[1] Visit Scotland – Highlands Road Trips</p>
+                                            <p class="text-xs text-slate-500 mb-2">visitscotland.com • May 2024</p>
+                                            <p class="text-xs text-slate-600 leading-relaxed">Official guidance on scenic routes, seasonal tips, and travel times.</p>
+                                        </div>
+                                        <div class="border-l-4 border-emerald-200 pl-4" data-mock="true">
+                                            <p class="font-medium text-sm text-slate-900">[2] ScotRail – Jacobite Steam Train</p>
+                                            <p class="text-xs text-slate-500 mb-2">scotrail.co.uk • April 2024</p>
+                                            <p class="text-xs text-slate-600 leading-relaxed">Schedules, booking windows, and accessibility notes.</p>
+                                        </div>
+                                        <div class="border-l-4 border-slate-200 pl-4" data-mock="true">
+                                            <p class="font-medium text-sm text-slate-900">[3] Lonely Planet – Scotland</p>
+                                            <p class="text-xs text-slate-500 mb-2">lonelyplanet.com • March 2024</p>
+                                            <p class="text-xs text-slate-600 leading-relaxed">Highlights, sample itineraries, and food picks.</p>
+                                        </div>
+                                        <div class="border-l-4 border-purple-200 pl-4" data-mock="true">
+                                            <p class="font-medium text-sm text-slate-900">[4] Highland Council Tourism</p>
+                                            <p class="text-xs text-slate-500 mb-2">highland.gov.uk • June 2024</p>
+                                            <p class="text-xs text-slate-600 leading-relaxed">Local attractions and seasonal accessibility information.</p>
+                                        </div>
+                                        <!-- @END_MAP )) -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- @END_COMPONENT: ExplorerResults -->
+            </div>
+        </div>
+        <!-- @END_COMPONENT: ExplorerPanel -->
+
+        <!-- @COMPONENT: PlannerPanel [trip planning interface] -->
+        <div id="plannerPanel" class="tab-panel hidden">
+            <div class="bg-white rounded-3xl shadow-xl border border-slate-200/50 overflow-hidden">
+                <div class="p-8">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold text-slate-900 mb-2">Trip Planner</h3>
+                        <p class="text-slate-600">Create a detailed itinerary tailored to your preferences and constraints</p>
+                    </div>
+
+                    <div class="max-w-5xl mx-auto">
+                        <!-- @COMPONENT: PlannerForm [user inputs for trip planning] -->
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                            <div class="space-y-2">
+                                <label class="block text-sm font-semibold text-slate-700">Trip Length</label>
+                                <div class="relative">
+                                    <select class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-travel-blue-500 focus:border-transparent appearance-none bg-white" data-mock="true">
+                                        <option>3 days</option>
+                                        <option>5 days</option>
+                                        <option selected>7 days</option>
+                                        <option>10 days</option>
+                                        <option>14 days</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="block text-sm font-semibold text-slate-700">Travel Month</label>
+                                <div class="relative">
+                                    <select class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-travel-blue-500 focus:border-transparent appearance-none bg-white" data-mock="true">
+                                        <option>June</option>
+                                        <option>July</option>
+                                        <option selected>August</option>
+                                        <option>September</option>
+                                        <option>October</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="block text-sm font-semibold text-slate-700">Party Size</label>
+                                <input 
+                                    type="text" 
+                                    placeholder="e.g., 2 adults, 1 senior"
+                                    value="2 adults, 1 senior"
+                                    class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-travel-blue-500 focus:border-transparent"
+                                    data-mock="true"
+                                >
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="block text-sm font-semibold text-slate-700">Max Drive Time</label>
+                                <div class="relative">
+                                    <select class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-travel-blue-500 focus:border-transparent appearance-none bg-white" data-mock="true">
+                                        <option>1 hour</option>
+                                        <option selected>2 hours</option>
+                                        <option>3 hours</option>
+                                        <option>4 hours</option>
+                                        <option>5+ hours</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                                </div>
+                            </div>
+
+                            <div class="space-y-2 md:col-span-2">
+                                <label class="block text-sm font-semibold text-slate-700">Interests & Preferences</label>
+                                <input 
+                                    type="text" 
+                                    placeholder="e.g., Scenery, castles, local food, museums"
+                                    value="Scenery, castles, local food"
+                                    class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-travel-blue-500 focus:border-transparent"
+                                    data-mock="true"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="space-y-4 mb-8">
+                            <label class="block text-sm font-semibold text-slate-700">Budget Range</label>
+                            <div class="flex space-x-4">
+                                <button class="budget-btn px-6 py-3 rounded-xl border-2 border-slate-300 hover:border-travel-blue-500 transition-colors font-medium text-slate-700">
+                                    $ Budget
+                                </button>
+                                <button class="budget-btn active px-6 py-3 rounded-xl border-2 border-travel-blue-500 bg-travel-blue-50 transition-colors font-medium text-travel-blue-700">
+                                    $$ Moderate
+                                </button>
+                                <button class="budget-btn px-6 py-3 rounded-xl border-2 border-slate-300 hover:border-travel-blue-500 transition-colors font-medium text-slate-700">
+                                    $$$ Luxury
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-center space-x-4">
+                            <button class="bg-travel-blue-600 hover:bg-travel-blue-700 text-white px-8 py-3 rounded-full font-medium transition-colors shadow-lg hover:shadow-xl">
+                                <i class="fas fa-magic mr-2"></i>Generate Itinerary
+                            </button>
+                            <button class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-6 py-3 rounded-full font-medium transition-colors">
+                                Clear Form
+                            </button>
+                        </div>
+                        <!-- @END_COMPONENT: PlannerForm -->
+                    </div>
+                </div>
+
+                <!-- @COMPONENT: PlannerResults [generated itinerary display] -->
+                <div class="border-t border-slate-100 bg-slate-50/50">
+                    <div class="p-8">
+                        <div class="max-w-5xl mx-auto">
+                            <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-200/50">
+                                <h4 class="text-xl font-bold text-slate-900 mb-6 flex items-center">
+                                    <i class="fas fa-route text-travel-blue-600 mr-3"></i>
+                                    Your 7-Day Scotland Highlands Itinerary
+                                </h4>
+
+                                <div class="space-y-8" data-mock="true">
+                                    <!-- @MAP: itineraryDays.map(day => ( -->
+                                    <div class="border-l-4 border-travel-blue-200 pl-6">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h5 class="text-lg font-semibold text-slate-900">Day 1 • Edinburgh Base</h5>
+                                            <span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-xs font-medium">$$ Moderate</span>
+                                        </div>
+                                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                            <div>
+                                                <p class="font-medium text-sm text-slate-700 mb-2">Morning (9:00 AM - 12:00 PM)</p>
+                                                <p class="text-sm text-slate-600">Edinburgh Castle tour and Royal Mile exploration. Allow 3 hours for comprehensive visit.</p>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-sm text-slate-700 mb-2">Afternoon (1:00 PM - 6:00 PM)</p>
+                                                <p class="text-sm text-slate-600">Princes Street Gardens, Scott Monument, and traditional Scottish lunch at The Witchery.</p>
+                                            </div>
+                                        </div>
+                                        <div class="bg-slate-50 rounded-lg p-4 text-sm">
+                                            <p class="font-medium text-slate-700 mb-1">Highlights:</p>
+                                            <p class="text-slate-600">• Edinburgh Castle Crown Jewels • Royal Mile historic closes • Views from Castle Esplanade</p>
+                                            <p class="font-medium text-slate-700 mt-2 mb-1">Rain Plan:</p>
+                                            <p class="text-slate-600">National Museum of Scotland, whisky tasting at Scotch Whisky Experience</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="border-l-4 border-emerald-200 pl-6">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h5 class="text-lg font-semibold text-slate-900">Day 2 • Edinburgh to Inverness</h5>
+                                            <span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-xs font-medium">2.5h drive</span>
+                                        </div>
+                                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                            <div>
+                                                <p class="font-medium text-sm text-slate-700 mb-2">Morning (8:00 AM - 12:00 PM)</p>
+                                                <p class="text-sm text-slate-600">Scenic drive via Pitlochry, stop at House of Bruar for shopping and coffee break.</p>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-sm text-slate-700 mb-2">Afternoon (1:00 PM - 6:00 PM)</p>
+                                                <p class="text-sm text-slate-600">Arrive Inverness, check into accommodation, explore Inverness city center and River Ness.</p>
+                                            </div>
+                                        </div>
+                                        <div class="bg-slate-50 rounded-lg p-4 text-sm">
+                                            <p class="font-medium text-slate-700 mb-1">Highlights:</p>
+                                            <p class="text-slate-600">• Cairngorms scenery • Pitlochry salmon ladder • Inverness riverside walks</p>
+                                            <p class="font-medium text-slate-700 mt-2 mb-1">Accommodation:</p>
+                                            <p class="text-slate-600">Inverness city center area for walkability to restaurants and attractions</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="border-l-4 border-purple-200 pl-6">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h5 class="text-lg font-semibold text-slate-900">Day 3 • Loch Ness & Surrounds</h5>
+                                            <span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-xs font-medium">1.5h total driving</span>
+                                        </div>
+                                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                            <div>
+                                                <p class="font-medium text-sm text-slate-700 mb-2">Morning (9:00 AM - 1:00 PM)</p>
+                                                <p class="text-sm text-slate-600">Urquhart Castle ruins and Loch Ness Centre, monster spotting opportunities with camera ready.</p>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-sm text-slate-700 mb-2">Afternoon (2:00 PM - 6:00 PM)</p>
+                                                <p class="text-sm text-slate-600">Culloden Battlefield visitor center and moorland walks, return to Inverness for dinner.</p>
+                                            </div>
+                                        </div>
+                                        <div class="bg-slate-50 rounded-lg p-4 text-sm">
+                                            <p class="font-medium text-slate-700 mb-1">Highlights:</p>
+                                            <p class="text-slate-600">• Urquhart Castle photography • Loch Ness boat trip option • Culloden historic significance</p>
+                                            <p class="font-medium text-slate-700 mt-2 mb-1">Rain Plan:</p>
+                                            <p class="text-slate-600">Extended time at Loch Ness Centre, Inverness Museum and Art Gallery</p>
+                                        </div>
+                                    </div>
+                                    <!-- @END_MAP )) -->
+
+                                    <div class="bg-travel-blue-50 rounded-xl p-6 border border-travel-blue-200">
+                                        <h6 class="font-semibold text-travel-blue-900 mb-3">Complete 7-Day Overview</h6>
+                                        <div class="grid md:grid-cols-2 gap-4 text-sm">
+                                            <div>
+                                                <p class="font-medium text-travel-blue-800 mb-2">Accommodation Strategy:</p>
+                                                <p class="text-travel-blue-700">• Edinburgh (1 night) - City center hotel</p>
+                                                <p class="text-travel-blue-700">• Inverness (2 nights) - Highland base</p>
+                                                <p class="text-travel-blue-700">• Fort William (2 nights) - Mountain access</p>
+                                                <p class="text-travel-blue-700">• Oban (2 nights) - Coastal finish</p>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-travel-blue-800 mb-2">Budget Breakdown (Per Day):</p>
+                                                <p class="text-travel-blue-700">• Accommodation: £80-120</p>
+                                                <p class="text-travel-blue-700">• Meals: £40-60</p>
+                                                <p class="text-travel-blue-700">• Attractions: £25-40</p>
+                                                <p class="text-travel-blue-700">• Transport: £15-30</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- @END_COMPONENT: PlannerResults -->
+            </div>
+        </div>
+        <!-- @END_COMPONENT: PlannerPanel -->
+
+    </main>
+    <!-- @END_COMPONENT: MainApplication -->
+
+    <!-- @COMPONENT: Footer [contact and additional info] -->
+    <footer class="bg-slate-900 text-white mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-br from-travel-blue-600 to-travel-blue-700 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-compass text-white text-sm"></i>
+                        </div>
+                        <h4 class="text-lg font-bold">TripSmith</h4>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        AI-powered travel planning with verified sources and expert insights. 
+                        Plan smarter, travel better.
+                    </p>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Features</h5>
+                    <ul class="space-y-2 text-sm text-slate-300">
+                        <li>• Travel Question Explorer</li>
+                        <li>• Custom Itinerary Generator</li>
+                        <li>• Verified Source Citations</li>
+                        <li>• Real-time Travel Data</li>
+                        <li>• Responsive Design</li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Technology</h5>
+                    <ul class="space-y-2 text-sm text-slate-300">
+                        <li>• FastAPI Backend</li>
+                        <li>• OpenAI Integration</li>
+                        <li>• Next.js Frontend</li>
+                        <li>• Tailwind CSS</li>
+                        <li>• Framer Motion</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-700 mt-8 pt-8 flex items-center justify-between">
+                <p class="text-sm text-slate-400">
+                    © 2024 TripSmith. Built with modern web technologies.
+                </p>
+                <div class="flex items-center space-x-4 text-slate-400">
+                    <span class="text-xs">Powered by AI</span>
+                    <i class="fas fa-robot text-travel-blue-500"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- @END_COMPONENT: Footer -->
+
+    <style>
+        .tab-button {
+            position: relative;
+            z-index: 10;
+        }
+        
+        .tab-button.active {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            color: white;
+            box-shadow: 0 4px 14px rgba(14, 165, 233, 0.3);
+        }
+        
+        .tab-button:not(.active) {
+            color: #64748b;
+        }
+        
+        .tab-button:not(.active):hover {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .budget-btn.active {
+            background: #f0f9ff;
+            border-color: #0ea5e9;
+            color: #0369a1;
+        }
+
+        .tab-panel {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Loading Animation */
+        .loading-dots::after {
+            content: '';
+            animation: dots 2s infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+    </style>
+
+    <script>
+        (function() {
+            // Tab switching functionality
+            const explorerTab = document.getElementById('explorerTab');
+            const plannerTab = document.getElementById('plannerTab');
+            const explorerPanel = document.getElementById('explorerPanel');
+            const plannerPanel = document.getElementById('plannerPanel');
+
+            function switchToExplorer() {
+                explorerTab.classList.add('active');
+                plannerTab.classList.remove('active');
+                explorerPanel.classList.remove('hidden');
+                plannerPanel.classList.add('hidden');
+            }
+
+            function switchToPlanner() {
+                plannerTab.classList.add('active');
+                explorerTab.classList.remove('active');
+                plannerPanel.classList.remove('hidden');
+                explorerPanel.classList.add('hidden');
+            }
+
+            explorerTab.addEventListener('click', switchToExplorer);
+            plannerTab.addEventListener('click', switchToPlanner);
+
+            // Budget button functionality
+            const budgetButtons = document.querySelectorAll('.budget-btn');
+            budgetButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    budgetButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Smooth scroll behavior for internal links
+            document.addEventListener('click', function(e) {
+                if (e.target.getAttribute('href') && e.target.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(e.target.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+
+            // Form validation feedback
+            const inputs = document.querySelectorAll('input, textarea, select');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.classList.add('ring-2', 'ring-travel-blue-500');
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.classList.remove('ring-2', 'ring-travel-blue-500');
+                });
+            });
+
+            // TODO: Implement API integration for search and planning functionality
+            // TODO: Add loading states for async operations
+            // TODO: Implement error handling and user feedback
+            // TODO: Add form validation and input sanitization
+            // TODO: Implement real-time search suggestions
+            // TODO: Add offline capability and caching
+        })();
+    </script>
+
+</body>
+</html>
